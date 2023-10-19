@@ -41,6 +41,6 @@ export default async function SubredditPage(props: PropsType) {
   return <>
     <h1 className="font-bold text-3xl md:text-4xl h-14">r/{subreddit.name}</h1>
     <MiniCreatePost session={session}/>
-    <PostFeed initialPosts={[]} subredditName={subreddit.name}/>
+    <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} userId={session?.user.id!}/>
   </>
 }
