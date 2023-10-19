@@ -49,25 +49,19 @@ function PostFeed(props: PropsType) {
   return (
     <ul className='flex flex-col col-span-2 space-y-6'>
       {posts.map((post, index) => {
-        const votesAmt = post.votes.reduce((acc, vote) => {
-          if (vote.type === 'UP') return acc + 1
-          if (vote.type === 'DOWN') return acc - 1
-          return acc
-        }, 0)
-
         const currentVote = post.votes.find(vote => vote.userId === userId)
 
         if (index === posts.length - 1) {
           return (
             <li key={post.id} ref={ref}>
-              <Post post={post}/>
+              <Post post={post} currentVote={currentVote}/>
             </li>
           )
         }
 
         return (
           <li key={post.id}>
-            <Post post={post}/>
+            <Post post={post} currentVote={currentVote}/>
           </li>
         )
       })}

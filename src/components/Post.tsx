@@ -1,23 +1,39 @@
 'use client'
 
 import EditorOutput from '@/components/EditorOutput'
+import PostVoteClient from '@/components/post-vote/PostVoteClient'
 import { formatTimeToNow } from '@/lib/utils'
 import { ExtendedPost } from '@/types/db'
+import { Vote } from '@prisma/client'
 import { MessageSquare } from 'lucide-react'
 import { useMemo, useRef } from 'react'
 
 type PropsType = {
   post: ExtendedPost
+  currentVote?: Pick<Vote, 'type'>
 }
 
 export default function Post(props: PropsType) {
-  const { post } = props
+  const { post, currentVote } = props
   const pRef = useRef<HTMLDivElement>(null)
   const subredditName = useMemo(() => post.subreddit.name, [post])
+  const votesAmt = useMemo(
+    () =>
+      post.votes.reduce((acc, vote) => {
+        if (vote.type === 'UP') return acc + 1
+        if (vote.type === 'DOWN') return acc - 1
+        return acc
+      }, 0),
+    [post.votes]
+  )
   return (
     <div className='rounded-md bg-white shadow'>
       <div className='px-6 py-4 flex justify-between'>
-        {/* TODO post votes */}
+        <PostVoteClient
+          postId={post.id}
+          initialVote={currentVote?.type}
+          initialVotesAmt={votesAmt}
+        />
 
         <div className='w-0 flex-1'>
           <div className='max-h-40 mt-1 text-xs text-gray-500'>
@@ -46,7 +62,7 @@ export default function Post(props: PropsType) {
             className='relative text-sm max-h-40 w-full overflow-clip'
             ref={pRef}
           >
-            <EditorOutput content={post.content}/>
+            <EditorOutput content={post.content} />
 
             {pRef.current?.clientHeight === 160 ? (
               <div className='absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent' />
