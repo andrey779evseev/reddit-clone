@@ -129,10 +129,7 @@ function Editor(props: PropsType) {
   }, [errors])
 
   const {mutate: createPost} = useMutation({
-    mutationFn: async ({title, content, subredditId}: PostCreationRequest) => {
-      const payload: PostCreationRequest = {
-        subredditId, title, content
-      }
+    mutationFn: async (payload: PostCreationRequest) => {
       const {data} = await axios.post('/api/subreddit/post/create', payload)
       return data
     },
