@@ -11,7 +11,7 @@ import { memo, useEffect, useMemo, useRef } from 'react'
 type PropsType = {
   initialPosts: ExtendedPost[]
   subredditName?: string
-  userId: string
+  userId?: string
   initialTotalCount: number
 }
 
@@ -36,6 +36,7 @@ function PostFeed(props: PropsType) {
       }>(query)
       return data
     },
+    enabled: initialPosts.length < initialTotalCount,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.totalCount <= pages.map(x => x.posts).flat().length
         ? undefined
