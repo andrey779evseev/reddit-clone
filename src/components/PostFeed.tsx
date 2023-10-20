@@ -6,16 +6,17 @@ import { ExtendedPost } from '@/types/db'
 import { useIntersection } from '@mantine/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { memo, useMemo, useRef } from 'react'
+import { memo, useEffect, useMemo, useRef } from 'react'
 
 type PropsType = {
   initialPosts: ExtendedPost[]
   subredditName?: string
   userId: string
+  initialTotalCount: number
 }
 
 function PostFeed(props: PropsType) {
-  const { initialPosts, subredditName, userId } = props
+  const { initialPosts, subredditName, userId, initialTotalCount } = props
   const lastPostRef = useRef<HTMLElement>(null)
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -29,20 +30,29 @@ function PostFeed(props: PropsType) {
         `/api/posts?limit=${INFINITE_SCROLLING_PAGINATION_RESULTS}&page=${pageParam}` +
         (!!subredditName ? `&subredditName=${subredditName}` : '')
 
-      const { data } = await axios.get<ExtendedPost[]>(query)
+      const { data } = await axios.get<{
+        posts: ExtendedPost[]
+        totalCount: number
+      }>(query)
       return data
     },
-    getNextPageParam: (_, pages) => {
-      return pages.length + 1
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.totalCount <= pages.map(x => x.posts).flat().length
+        ? undefined
+        : pages.length + 1
     },
     initialData: {
-      pages: [initialPosts],
+      pages: [{ posts: initialPosts, totalCount: initialTotalCount }],
       pageParams: [1]
     }
   })
 
+  useEffect(() => {
+    if (entry?.isIntersecting) fetchNextPage()
+  }, [entry, fetchNextPage])
+
   const posts = useMemo(
-    () => data?.pages.flat() ?? initialPosts,
+    () => data?.pages.map(x => x.posts).flat() ?? initialPosts,
     [data, initialPosts]
   )
 
@@ -54,14 +64,14 @@ function PostFeed(props: PropsType) {
         if (index === posts.length - 1) {
           return (
             <li key={post.id} ref={ref}>
-              <Post post={post} currentVote={currentVote}/>
+              <Post post={post} currentVote={currentVote} />
             </li>
           )
         }
 
         return (
           <li key={post.id}>
-            <Post post={post} currentVote={currentVote}/>
+            <Post post={post} currentVote={currentVote} />
           </li>
         )
       })}

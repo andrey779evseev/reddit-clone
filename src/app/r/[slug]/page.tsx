@@ -30,7 +30,9 @@ export default async function SubredditPage(props: PropsType) {
           comments: true,
           subreddit: true
         },
-
+        orderBy: {
+          createdAt: 'desc'
+        },
         take: INFINITE_SCROLLING_PAGINATION_RESULTS
       }
     }
@@ -38,9 +40,26 @@ export default async function SubredditPage(props: PropsType) {
 
   if (!subreddit) return notFound()
 
-  return <>
-    <h1 className="font-bold text-3xl md:text-4xl h-14">r/{subreddit.name}</h1>
-    <MiniCreatePost session={session}/>
-    <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} userId={session?.user.id!}/>
-  </>
+  const totalCount = await db.post.count({
+    where: {
+      subreddit: {
+        name: slug
+      }
+    }
+  })
+
+  return (
+    <>
+      <h1 className='font-bold text-3xl md:text-4xl h-14'>
+        r/{subreddit.name}
+      </h1>
+      <MiniCreatePost session={session} />
+      <PostFeed
+        initialPosts={subreddit.posts}
+        subredditName={subreddit.name}
+        userId={session?.user.id!}
+        initialTotalCount={totalCount}
+      />
+    </>
+  )
 }
