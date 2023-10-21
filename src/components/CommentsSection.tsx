@@ -38,15 +38,6 @@ export default async function CommentsSection(props: PropsType) {
         {comments
           .filter(comment => !comment.replyToId)
           .map(topLevelComment => {
-            const topLevelCommentVotesAmount = topLevelComment.votes.reduce(
-              (acc, vote) => {
-                if (vote.type === 'UP') return acc + 1
-                if (vote.type === 'DOWN') return acc - 1
-                return acc
-              },
-              0
-            )
-
             const topLevelCommentVote = topLevelComment.votes.find(
               vote => vote.userId === session?.user.id
             )
@@ -54,8 +45,28 @@ export default async function CommentsSection(props: PropsType) {
             return (
               <div key={topLevelComment.id} className='flex flex-col'>
                 <div className='mb-2'>
-                  <PostComment comment={topLevelComment} />
+                  <PostComment
+                    comment={topLevelComment}
+                    currentVote={topLevelCommentVote}
+                  />
                 </div>
+
+                {topLevelComment.replies
+                  .toSorted((a, b) => b.votes.length - a.votes.length)
+                  .map(reply => {
+                    const replyVote = reply.votes.find(
+                      vote => vote.userId === session?.user.id
+                    )
+
+                    return (
+                      <div
+                        key={reply.id}
+                        className='ml-2 py-2 pl-4 border-l border-zinc-200'
+                      >
+                        <PostComment comment={reply} currentVote={replyVote} />
+                      </div>
+                    )
+                  })}
               </div>
             )
           })}

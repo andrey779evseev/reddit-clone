@@ -14,10 +14,11 @@ import { memo, useState } from 'react'
 type PropsType = {
   postId: string
   replyToId?: string
+  close?: () => void
 }
 
 function CreateComment(props: PropsType) {
-  const {postId, replyToId} = props
+  const { postId, replyToId, close } = props
   const [input, setInput] = useState('')
   const { loginToast } = useCustomToast()
   const router = useRouter()
@@ -38,10 +39,13 @@ function CreateComment(props: PropsType) {
       })
     },
     onSuccess: () => {
+      if(close)
+        close()
       router.refresh()
       setInput('')
     }
   })
+  
   return (
     <div className='grid w-full gap-1.5'>
       <Label htmlFor='comment'>Your comment</Label>
@@ -54,7 +58,12 @@ function CreateComment(props: PropsType) {
           placeholder='What are your thoughts?'
         />
 
-        <div className='mt-2 flex justify-end'>
+        <div className='mt-2 flex justify-end gap-2'>
+          {close ? (
+            <Button onClick={() => close()} tabIndex={-1} variant='subtle'>
+              Cancel
+            </Button>
+          ) : null}
           <Button
             isLoading={isLoading}
             disabled={input.length === 0}
