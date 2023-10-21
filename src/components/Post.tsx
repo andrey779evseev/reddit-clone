@@ -2,7 +2,7 @@
 
 import { Vote } from '@prisma/client'
 import { MessageSquare } from 'lucide-react'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import EditorOutput from '@/components/EditorOutput'
 import PostVoteClient from '@/components/post-vote/PostVoteClient'
 import { formatTimeToNow } from '@/lib/utils'
@@ -15,7 +15,7 @@ type PropsType = {
 
 export default function Post(props: PropsType) {
 	const { post, currentVote } = props
-	const pRef = useRef<HTMLDivElement>(null)
+	const [pRef, setPRef] = useState<HTMLDivElement | null>(null)
 	const subredditName = useMemo(() => post.subreddit.name, [post])
 	const votesAmt = useMemo(
 		() =>
@@ -26,6 +26,11 @@ export default function Post(props: PropsType) {
 			}, 0),
 		[post.votes],
 	)
+
+	useEffect(() => {
+		console.log(pRef?.clientHeight)
+	}, [pRef?.clientHeight])
+
 	return (
 		<div className='rounded-md bg-white shadow'>
 			<div className='flex flex-col items-center justify-between px-6 py-4 sm:flex-row sm:items-start'>
@@ -60,13 +65,11 @@ export default function Post(props: PropsType) {
 
 					<div
 						className='relative max-h-40 w-full overflow-clip text-sm'
-						ref={pRef}
+						ref={setPRef}
 					>
 						<EditorOutput content={post.content} />
 
-						{pRef.current?.clientHeight === 160 ? (
-							<div className='absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent' />
-						) : null}
+						<div className='absolute left-0 top-16 h-24 w-full bg-gradient-to-t from-white to-transparent' />
 					</div>
 				</div>
 			</div>
