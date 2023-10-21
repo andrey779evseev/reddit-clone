@@ -59,7 +59,7 @@ export default function Post(props: PropsType) {
 					</a>
 
 					<div
-						className='relative max-h-40 w-full text-clip text-sm'
+						className='relative max-h-40 w-full overflow-clip text-sm'
 						ref={pRef}
 					>
 						<EditorOutput content={post.content} />

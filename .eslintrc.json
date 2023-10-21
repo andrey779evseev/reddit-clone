@@ -7,7 +7,8 @@
 		"jsx-quotes": [2, "prefer-single"],
 		"semi": ["error", "never"],
 		// "no-unused-vars": "off",
-		"unused-imports/no-unused-imports": "error"
+		"unused-imports/no-unused-imports": "error",
+    "tailwindcss/migration-from-tailwind-2": "off"
 	},
 	"plugins": ["tailwindcss", "unused-imports"],
 	"settings": {
