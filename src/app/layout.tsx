@@ -6,39 +6,40 @@ import '@/styles/globals.css'
 import { Inter } from 'next/font/google'
 
 export const metadata = {
-  title: 'Breadit',
-  description: 'A Reddit clone built with Next.js and TypeScript.'
+	title: 'Breadit',
+	description: 'A Reddit clone built with Next.js and TypeScript.',
 }
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
-  children,
-  authModal
+	children,
+	authModal,
 }: {
-  children: React.ReactNode
-  authModal: React.ReactNode
+	children: React.ReactNode
+	authModal: React.ReactNode
 }) {
-  return (
-    <html
-      lang='en'
-      className={cn(
-        'bg-white text-slate-900 antialiased light',
-        inter.className
-      )}
-    >
-      <Providers>
-        <body className='min-h-screen p-12 bg-slate-50 antialiased'>
-          <Navbar />
+	return (
+		<html
+			lang='en'
+			// eslint-disable-next-line tailwindcss/no-custom-classname
+			className={cn(
+				'light bg-white text-slate-900 antialiased',
+				inter.className,
+			)}
+		>
+			<Providers>
+				<body className='min-h-screen bg-slate-50 p-4 antialiased sm:p-12'>
+					<Navbar />
 
-          {authModal}
+					{authModal}
 
-          <div className='container max-w-7xl mx-auto h-full pt-12'>
-            {children}
-          </div>
-          <Toaster />
-        </body>
-      </Providers>
-    </html>
-  )
+					<div className='container mx-auto h-full max-w-7xl pt-12'>
+						{children}
+					</div>
+					<Toaster />
+				</body>
+			</Providers>
+		</html>
+	)
 }

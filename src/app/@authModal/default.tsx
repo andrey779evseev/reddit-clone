@@ -1,7 +1,3 @@
-
-
-export default function DefaultAuthModal () {
-  return (
-    null
-  )
+export default function DefaultAuthModal() {
+	return null
 }

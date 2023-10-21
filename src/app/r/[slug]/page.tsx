@@ -1,65 +1,65 @@
+import { INFINITE_SCROLLING_PAGINATION_RESULTS } from '@/config'
+import { notFound } from 'next/navigation'
 import MiniCreatePost from '@/components/MiniCreatePost'
 import PostFeed from '@/components/PostFeed'
-import { INFINITE_SCROLLING_PAGINATION_RESULTS } from '@/config'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { notFound } from 'next/navigation'
 
 type PropsType = {
-  params: {
-    slug: string
-  }
+	params: {
+		slug: string
+	}
 }
 
 export default async function SubredditPage(props: PropsType) {
-  const {
-    params: { slug }
-  } = props
+	const {
+		params: { slug },
+	} = props
 
-  const session = await getAuthSession()
+	const session = await getAuthSession()
 
-  const subreddit = await db.subreddit.findFirst({
-    where: {
-      name: slug
-    },
-    include: {
-      posts: {
-        include: {
-          author: true,
-          votes: true,
-          comments: true,
-          subreddit: true
-        },
-        orderBy: {
-          createdAt: 'desc'
-        },
-        take: INFINITE_SCROLLING_PAGINATION_RESULTS
-      }
-    }
-  })
+	const subreddit = await db.subreddit.findFirst({
+		where: {
+			name: slug,
+		},
+		include: {
+			posts: {
+				include: {
+					author: true,
+					votes: true,
+					comments: true,
+					subreddit: true,
+				},
+				orderBy: {
+					createdAt: 'desc',
+				},
+				take: INFINITE_SCROLLING_PAGINATION_RESULTS,
+			},
+		},
+	})
 
-  if (!subreddit) return notFound()
+	if (!subreddit) return notFound()
 
-  const totalCount = await db.post.count({
-    where: {
-      subreddit: {
-        name: slug
-      }
-    }
-  })
+	const totalCount = await db.post.count({
+		where: {
+			subreddit: {
+				name: slug,
+			},
+		},
+	})
 
-  return (
-    <>
-      <h1 className='font-bold text-3xl md:text-4xl h-14'>
-        r/{subreddit.name}
-      </h1>
-      <MiniCreatePost session={session} />
-      <PostFeed
-        initialPosts={subreddit.posts}
-        subredditName={subreddit.name}
-        userId={session?.user.id!}
-        initialTotalCount={totalCount}
-      />
-    </>
-  )
+	return (
+		<>
+			<h1 className='h-14 text-3xl font-bold md:text-4xl'>
+				r/{subreddit.name}
+			</h1>
+			<MiniCreatePost session={session} />
+			<PostFeed
+				initialPosts={subreddit.posts}
+				subredditName={subreddit.name}
+				userId={session?.user.id!}
+				initialTotalCount={totalCount}
+			/>
+		</>
+	)
 }

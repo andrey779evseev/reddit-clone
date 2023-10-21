@@ -5,12 +5,12 @@ import { SessionProvider } from 'next-auth/react'
 import { PropsWithChildren } from 'react'
 
 export default function Providers(props: PropsWithChildren) {
-  const { children } = props
+	const { children } = props
 
-  const queryClient = new QueryClient()
-  return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider>{children}</SessionProvider>
-    </QueryClientProvider>
-  )
+	const queryClient = new QueryClient()
+	return (
+		<QueryClientProvider client={queryClient}>
+			<SessionProvider>{children}</SessionProvider>
+		</QueryClientProvider>
+	)
 }
