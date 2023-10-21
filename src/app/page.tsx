@@ -5,6 +5,8 @@ import { buttonVariants } from '@/components/ui/Button'
 import UserFeed from '@/components/UserFeed'
 import { getAuthSession } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
 	const session = await getAuthSession()
 	return (
