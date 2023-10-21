@@ -6,6 +6,7 @@ import UserFeed from '@/components/UserFeed'
 import { getAuthSession } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
 
 export default async function Home() {
 	const session = await getAuthSession()
