@@ -1,4 +1,5 @@
 import { Icons } from '@/components/Icons'
+import SearchBar from '@/components/SearchBar'
 import UserAccountNav from '@/components/UserAccountNav'
 import { buttonVariants } from '@/components/ui/Button'
 import { getAuthSession } from '@/lib/auth'
@@ -18,6 +19,7 @@ export default async function Navbar() {
         </Link>
 
         {/* Search bar */}
+        <SearchBar />
 
         {session?.user ? (
           <UserAccountNav user={session.user} />

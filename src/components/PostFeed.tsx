@@ -6,6 +6,7 @@ import { ExtendedPost } from '@/types/db'
 import { useIntersection } from '@mantine/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { Loader2 } from 'lucide-react'
 import { memo, useEffect, useMemo, useRef } from 'react'
 
 type PropsType = {
@@ -76,6 +77,12 @@ function PostFeed(props: PropsType) {
           </li>
         )
       })}
+
+      {isFetchingNextPage && (
+        <li className='flex justify-center'>
+          <Loader2 className='w-6 h-6 text-zinc-500 animate-spin' />
+        </li>
+      )}
     </ul>
   )
 }
