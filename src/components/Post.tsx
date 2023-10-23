@@ -40,7 +40,7 @@ export default function Post(props: PropsType) {
 					initialVotesAmt={votesAmt}
 				/>
 
-				<div className='flex-1 self-start'>
+				<div className='max-w-full flex-1 self-start'>
 					<div className='mt-1 max-h-40 text-xs text-gray-500'>
 						{subredditName ? (
 							<>

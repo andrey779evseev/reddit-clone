@@ -8,20 +8,20 @@ import { Inter } from 'next/font/google'
 export const metadata = {
 	title: 'Breadit',
 	description: 'A Reddit clone built with Next.js and TypeScript.',
-  openGraph: {
+	openGraph: {
 		type: 'website',
 		siteName: 'Breadit',
 		title: 'Breadit',
 		description: 'A Reddit clone built with Next.js and TypeScript.',
-    url: 'https://malifor-reddit-clone.vercel.app',
-    images: '/og.png'
+		url: 'https://malifor-reddit-clone.vercel.app',
+		images: '/og.png',
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Breadit',
 		description: 'A Reddit clone built with Next.js and TypeScript.',
-    site: 'https://malifor-reddit-clone.app',
-    images: '/og.png'
+		site: 'https://malifor-reddit-clone.app',
+		images: '/og.png',
 	},
 }
 
