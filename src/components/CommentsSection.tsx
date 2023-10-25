@@ -52,7 +52,7 @@ export default async function CommentsSection(props: PropsType) {
 								</div>
 
 								{topLevelComment.replies
-									.toSorted((a, b) => b.votes.length - a.votes.length)
+									.sort((a, b) => b.votes.length - a.votes.length)
 									.map((reply) => {
 										const replyVote = reply.votes.find(
 											(vote) => vote.userId === session?.user.id,
