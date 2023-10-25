@@ -50,7 +50,10 @@ export default function PostComment(props: PropsType) {
 					<p className='text-sm font-medium text-gray-900'>
 						u/{comment.author.username}
 					</p>
-					<p className='max-h-40 truncate text-xs text-zinc-500'>
+					<p
+						className='max-h-40 truncate text-xs text-zinc-500'
+						suppressHydrationWarning
+					>
 						{formatTimeToNow(new Date(comment.createdAt))}
 					</p>
 				</div>

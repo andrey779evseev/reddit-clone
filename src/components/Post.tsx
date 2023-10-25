@@ -2,7 +2,7 @@
 
 import { Vote } from '@prisma/client'
 import { MessageSquare } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import EditorOutput from '@/components/EditorOutput'
 import PostVoteClient from '@/components/post-vote/PostVoteClient'
 import { formatTimeToNow } from '@/lib/utils'
@@ -26,10 +26,6 @@ export default function Post(props: PropsType) {
 			}, 0),
 		[post.votes],
 	)
-
-	useEffect(() => {
-		console.log(pRef?.clientHeight)
-	}, [pRef?.clientHeight])
 
 	return (
 		<div className='rounded-md bg-white shadow'>

@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import SubscribeLeaveToggle from '@/components/SubscribeLeaveToggle'
+import ToFeedButton from '@/components/ToFeedButton'
 import { buttonVariants } from '@/components/ui/Button'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
@@ -63,7 +64,7 @@ export default async function SubredditLayout(props: PropsType) {
 	return (
 		<div className='mx-auto h-full max-w-7xl pt-12 sm:container'>
 			<div>
-				{/* TODO: Button to take us back */}
+				<ToFeedButton />
 
 				<div className='grid grid-cols-1 gap-y-4 py-6 md:grid-cols-3 md:gap-x-4'>
 					<div className='col-span-2 flex flex-col space-y-6'>{children}</div>
